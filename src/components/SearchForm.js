@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import './SearchForm.css'; // We will create this next
+import './SearchForm.css';
 
 const SearchForm = ({ onSearch }) => {
-  // State for all our filters
   const [type, setType] = useState('any');
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000000);
@@ -13,7 +12,6 @@ const SearchForm = ({ onSearch }) => {
   const [dateAdded, setDateAdded] = useState(null);
   const [postcode, setPostcode] = useState('');
 
-  // Handle the Search Button Click
   const handleSearch = (e) => {
     e.preventDefault();
     onSearch({
@@ -70,7 +68,7 @@ const SearchForm = ({ onSearch }) => {
         />
       </div>
 
-      {/* Date Added Widget (Crucial for Marks) */}
+      {/* Date Added Widget */}
       <div className="form-group">
         <label>Added After</label>
         <DatePicker 

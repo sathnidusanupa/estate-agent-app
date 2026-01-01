@@ -2,13 +2,46 @@ import React from 'react';
 import { FaTrash, FaTimes } from 'react-icons/fa'; 
 import './FavouritesList.css'; 
 
-const FavouritesList = ({ favourites, onRemove, onClear }) => {
+// We added 'onDropProperty' to the props vvv
+const FavouritesList = ({ favourites, onRemove, onClear, onDropProperty }) => {
+    
+    // 1. Allow the drop (Required by browsers)
+    const handleDragOver = (e) => {
+        e.preventDefault(); 
+        e.currentTarget.style.backgroundColor = "#f0f8ff"; // Light blue highlight when dragging over
+    };
+
+    // 2. Reset style when drag leaves
+    const handleDragLeave = (e) => {
+        e.currentTarget.style.backgroundColor = "white"; 
+    };
+
+    // 3. Handle the actual drop
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.currentTarget.style.backgroundColor = "white"; 
+        
+        // Get the "ID" we attached to the item when we started dragging
+        const propertyId = e.dataTransfer.getData("propertyId");
+        
+        if (propertyId) {
+            onDropProperty(propertyId);
+        }
+    };
+
     return (
-        <div className="favourites-sidebar">
+        <div 
+            className="favourites-sidebar"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+        >
             <h3>Favourites ({favourites.length})</h3>
             
             {favourites.length === 0 ? (
-                <p>Drag properties here or click the heart icon to save.</p>
+                <div style={{ padding: '20px', border: '2px dashed #ccc', textAlign: 'center', color: '#999' }}>
+                    Drag properties here to save
+                </div>
             ) : (
                 <div className="fav-list">
                     {favourites.map(prop => (

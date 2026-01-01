@@ -32,18 +32,28 @@ function App() {
   const clearFavourites = () => {
     setFavourites([]);
   };
-  // ------------------------
+
+  // --- DRAG AND DROP HANDLERS ---
+  const handleDragStart = (e, property) => {
+    // Attach the property ID to the drag event so we know WHAT is being dragged
+    e.dataTransfer.setData("propertyId", property.id);
+  };
+
+  const handleDrop = (propertyId) => {
+    // Find the property object using the ID
+    const propertyToAdd = properties.find(p => p.id === propertyId);
+    if (propertyToAdd) {
+        addToFavourites(propertyToAdd);
+    }
+  };
+  // ------------------------------
 
   const handleSearch = (criteria) => {
     const results = properties.filter(property => {
       const typeMatch = criteria.type === 'any' || property.type === criteria.type;
       const priceMatch = property.price >= criteria.minPrice && property.price <= criteria.maxPrice;
       const bedMatch = property.bedrooms >= criteria.minBedrooms && property.bedrooms <= criteria.maxBedrooms;
-      
-      // --- THE FIX IS HERE ---
-      // We added "(property.postcode && ...)" to ensure the postcode exists before checking it.
       const postcodeMatch = criteria.postcode === '' || (property.postcode && property.postcode.toUpperCase().startsWith(criteria.postcode.toUpperCase()));
-      
       return typeMatch && priceMatch && bedMatch && postcodeMatch;
     });
     setFilteredProperties(results);
@@ -68,7 +78,13 @@ function App() {
                         <div className="property-list">
                             {filteredProperties.length === 0 ? <p>No properties found.</p> : (
                                 filteredProperties.map(property => (
-                                    <div key={property.id} className="property-card">
+                                    <div 
+                                        key={property.id} 
+                                        className="property-card"
+                                        draggable="true" // 1. Enable Dragging
+                                        onDragStart={(e) => handleDragStart(e, property)} // 2. Handle Drag Start
+                                        style={{ cursor: 'grab' }} // Optional: Change cursor to hand
+                                    >
                                         <img src={property.picture} alt={property.description} width="100%" />
                                         <h3>{property.location}</h3>
                                         <p>{property.type} - {property.bedrooms} Beds</p>
@@ -99,6 +115,7 @@ function App() {
                 favourites={favourites} 
                 onRemove={removeFromFavourites}
                 onClear={clearFavourites}
+                onDropProperty={handleDrop} // 3. Pass the drop handler to the list
             />
         </div>
 

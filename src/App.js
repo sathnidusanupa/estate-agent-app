@@ -35,19 +35,17 @@ function App() {
 
   // --- DRAG AND DROP HANDLERS ---
   const handleDragStart = (e, property) => {
-    // Attach the property ID to the drag event so we know WHAT is being dragged
     e.dataTransfer.setData("propertyId", property.id);
   };
 
   const handleDrop = (propertyId) => {
-    // Find the property object using the ID
     const propertyToAdd = properties.find(p => p.id === propertyId);
     if (propertyToAdd) {
         addToFavourites(propertyToAdd);
     }
   };
-  // ------------------------------
 
+  // --- SEARCH LOGIC ---
   const handleSearch = (criteria) => {
     const results = properties.filter(property => {
       const typeMatch = criteria.type === 'any' || property.type === criteria.type;
@@ -67,10 +65,12 @@ function App() {
         </Link>
       </header>
 
+      {/* UPDATED: Removed style={{...}} and added className="main-container" */}
       <div className="main-container">
         
-        {/* LEFT SIDE: Content */}
-        <div style={{ flex: 3 }}>
+        {/* LEFT SIDE: Content Area */}
+        {/* UPDATED: Added className="content-area" */}
+        <div className="content-area">
             <Routes>
                 <Route path="/" element={
                     <>
@@ -81,9 +81,9 @@ function App() {
                                     <div 
                                         key={property.id} 
                                         className="property-card"
-                                        draggable="true" // 1. Enable Dragging
-                                        onDragStart={(e) => handleDragStart(e, property)} // 2. Handle Drag Start
-                                        style={{ cursor: 'grab' }} // Optional: Change cursor to hand
+                                        draggable="true" 
+                                        onDragStart={(e) => handleDragStart(e, property)}
+                                        style={{ cursor: 'grab' }}
                                     >
                                         <img src={property.picture} alt={property.description} width="100%" />
                                         <h3>{property.location}</h3>
@@ -110,12 +110,13 @@ function App() {
         </div>
 
         {/* RIGHT SIDE: Favourites Sidebar */}
-        <div style={{ flex: 1 }}>
+        {/* UPDATED: Added className="sidebar-area" */}
+        <div className="sidebar-area">
             <FavouritesList 
                 favourites={favourites} 
                 onRemove={removeFromFavourites}
                 onClear={clearFavourites}
-                onDropProperty={handleDrop} // 3. Pass the drop handler to the list
+                onDropProperty={handleDrop} 
             />
         </div>
 

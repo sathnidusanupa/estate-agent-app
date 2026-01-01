@@ -67,7 +67,7 @@ function App() {
         </Link>
       </header>
 
-      <div className="main-container" style={{ display: 'flex', gap: '20px', padding: '20px' }}>
+      <div className="main-container">
         
         {/* LEFT SIDE: Content */}
         <div style={{ flex: 3 }}>

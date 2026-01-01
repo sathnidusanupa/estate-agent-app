@@ -36,3 +36,72 @@
     transform: rotate(360deg);
   }
 }
+
+/* --- Desktop Layout (Default) --- */
+.main-container {
+  display: flex;       /* Side by side */
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* The Left Side (Search + Results) */
+.content-area {
+  flex: 3;
+}
+
+/* The Right Side (Sidebar) */
+.sidebar-area {
+  flex: 1;
+}
+
+.property-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Auto-grid */
+  gap: 20px;
+}
+
+.property-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.property-card:hover {
+  transform: translateY(-5px); /* Little hop effect */
+}
+
+.details-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* --- MOBILE LAYOUT (Media Query) --- */
+/* This rule runs ONLY if screen is smaller than 768px (iPad Portrait/Phones) */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column; /* Stack top-to-bottom instead of side-by-side */
+  }
+
+  .sidebar-area {
+    order: -1; /* Move Favourites to the TOP on mobile so user sees them */
+    margin-bottom: 20px;
+  }
+  
+  .search-form {
+    flex-direction: column; /* Stack search inputs vertically */
+  }
+  
+  .search-btn {
+    width: 100%; /* Full width button */
+    margin-top: 10px;
+  }
+}

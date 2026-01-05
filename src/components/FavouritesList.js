@@ -2,28 +2,21 @@ import React from 'react';
 import { FaTrash, FaTimes } from 'react-icons/fa'; 
 import './FavouritesList.css'; 
 
-// We added 'onDropProperty' to the props vvv
 const FavouritesList = ({ favourites, onRemove, onClear, onDropProperty }) => {
     
-    // 1. Allow the drop (Required by browsers)
     const handleDragOver = (e) => {
         e.preventDefault(); 
-        e.currentTarget.style.backgroundColor = "#f0f8ff"; // Light blue highlight when dragging over
+        e.currentTarget.style.backgroundColor = "#f0f8ff"; 
     };
 
-    // 2. Reset style when drag leaves
     const handleDragLeave = (e) => {
         e.currentTarget.style.backgroundColor = "white"; 
     };
 
-    // 3. Handle the actual drop
     const handleDrop = (e) => {
         e.preventDefault();
         e.currentTarget.style.backgroundColor = "white"; 
-        
-        // Get the "ID" we attached to the item when we started dragging
         const propertyId = e.dataTransfer.getData("propertyId");
-        
         if (propertyId) {
             onDropProperty(propertyId);
         }
@@ -46,7 +39,12 @@ const FavouritesList = ({ favourites, onRemove, onClear, onDropProperty }) => {
                 <div className="fav-list">
                     {favourites.map(prop => (
                         <div key={prop.id} className="fav-item">
-                            <img src={prop.picture} alt="thumb" className="fav-thumb" />
+                            {/* FIXED IMAGE PATH BELOW vvv */}
+                            <img 
+                                src={process.env.PUBLIC_URL + prop.picture} 
+                                alt="thumb" 
+                                className="fav-thumb" 
+                            />
                             <div className="fav-info">
                                 <h4>{prop.location}</h4>
                                 <p>£{prop.price.toLocaleString()}</p>

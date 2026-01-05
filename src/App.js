@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+// Note: We are importing from the NEW folders now
 import SearchForm from './components/SearchForm';
 import FavouritesList from './components/FavouritesList';
 import PropertyPage from './pages/PropertyPage';
@@ -65,11 +66,9 @@ function App() {
         </Link>
       </header>
 
-      {/* UPDATED: Removed style={{...}} and added className="main-container" */}
       <div className="main-container">
         
         {/* LEFT SIDE: Content Area */}
-        {/* UPDATED: Added className="content-area" */}
         <div className="content-area">
             <Routes>
                 <Route path="/" element={
@@ -85,7 +84,12 @@ function App() {
                                         onDragStart={(e) => handleDragStart(e, property)}
                                         style={{ cursor: 'grab' }}
                                     >
-                                        <img src={property.picture} alt={property.description} width="100%" />
+                                        {/* FIXED IMAGE PATH BELOW vvv */}
+                                        <img 
+                                            src={process.env.PUBLIC_URL + property.picture} 
+                                            alt={property.description} 
+                                            width="100%" 
+                                        />
                                         <h3>{property.location}</h3>
                                         <p>{property.type} - {property.bedrooms} Beds</p>
                                         <p>£{property.price.toLocaleString()}</p>
@@ -110,7 +114,6 @@ function App() {
         </div>
 
         {/* RIGHT SIDE: Favourites Sidebar */}
-        {/* UPDATED: Added className="sidebar-area" */}
         <div className="sidebar-area">
             <FavouritesList 
                 favourites={favourites} 
